@@ -1,4 +1,4 @@
-# RATING-WIDGET-CODING-CHALLENGE
+# WORD-GAME-CODING-CHALLENGE
 
 This project is a coding challenge for interviewing process organized by objective.
 
