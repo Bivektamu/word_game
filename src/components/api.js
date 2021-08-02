@@ -23,6 +23,7 @@ export const dictionary = [
     "understanding",
     "theory",
     "law",
+
 ];
 
 export const player = [
