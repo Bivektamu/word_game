@@ -47,9 +47,11 @@ export const checkIfWordExistsInDictionary = (word) => new Promise((resolve, rej
 
     var word_not_in_dictionary = [];
 
+    let check_if_word_exists = 0;
     for (var i = 0; i < word.length; i++) {
         word[i] = word[i].replace(/\s/g, '');
-        let check_if_word_exists = (dictionary.includes(word[i]));
+
+        if (word[i].length > 0) { check_if_word_exists = dictionary.includes(word[i]) }
 
         if (!check_if_word_exists) {
             word_not_in_dictionary.push(word[i])
