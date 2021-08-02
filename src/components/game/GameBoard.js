@@ -50,6 +50,7 @@ export const GameBoard = () => {
             const numberOfTries = potentialNewPlayer[0].tries
 
             if (numberOfTries < 10) {
+
                 setCurrentPlayerId(0)
             }
             else {
@@ -155,7 +156,7 @@ export const GameBoard = () => {
 
                         {check && <span className="check">&#10004;</span>}
 
-                        {unmatchedWords && (<div className="alert">
+                        {unmatchedWords && unmatchedWords.length > 0 && (<div className="alert">
                             <p>
                                 {unmatchedWords.map((error, index) => <span key={index} className="unmatched">{error}</span>)}
                             </p>
