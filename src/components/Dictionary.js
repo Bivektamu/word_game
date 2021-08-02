@@ -21,7 +21,9 @@ function Dictionary() {
         e.preventDefault();
 
         addWordsToDictionary(words).then(
-            resole => { },
+            result => {
+                console.log("Word added");
+            },
             error => {
                 console.log(error)
                 setErrors(error)
@@ -49,7 +51,7 @@ function Dictionary() {
             </div>
             <br /><br />
 
-            {errors && (<div className="alert">
+            {errors && errors.length > 0 && (<div className="alert">
                 <p>
                     Word already exists: {errors.map(error => <span>{error}, </span>)}
                 </p>
