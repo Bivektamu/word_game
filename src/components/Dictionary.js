@@ -13,7 +13,6 @@ function Dictionary() {
         const dictionary_list = (getDictionary());
         setWordsInDictionary(dictionary_list)
 
-        errors.length > 0 && errors.map(item => console.log(item))
     }, [wordsInDictionary])
 
 
@@ -25,15 +24,12 @@ function Dictionary() {
                 console.log("Word added");
             },
             error => {
-                console.log(error)
                 setErrors(error)
 
             }
         );
+
         setWordsInDictionary([...getDictionary()])
-
-        console.log(wordsInDictionary);
-
     }
 
     const wordsList = wordsInDictionary && wordsInDictionary.map((item, index) => {
@@ -41,7 +37,7 @@ function Dictionary() {
             <p className='word' key={index}>{item}</p>
         )
     })
-    // 5e42a6
+
 
     return (
         <div>
@@ -51,6 +47,7 @@ function Dictionary() {
             </div>
             <br /><br />
 
+            {/* ERROR FOR ALREDY EXISTING WORD  */}
             {errors && errors.length > 0 && (<div className="alert">
                 <p>
                     Word already exists: {errors.map(error => <span>{error}, </span>)}
@@ -58,7 +55,8 @@ function Dictionary() {
             </div>
             )}
 
-            < form id="add_words_form" onSubmit={(e) => onSubmit(e)}>
+            {/* FORM TO ADD NEW WORDS */}
+            <form id="add_words_form" onSubmit={(e) => onSubmit(e)}>
                 <label>Wanna Add more words to Dictionary, please type words separated by comma</label><br />
                 <textarea type="text" name="word_to_add" id="word_to_add" value={words} onChange={(e) => setWords(e.target.value)} />
                 <button type="submit" >Submit</button>

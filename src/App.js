@@ -26,15 +26,12 @@ function App() {
 
         {!next && (
           <Fragment>
+
             <Dictionary />
             <br /><br />
             <button onClick={() => setToggleNext(true)}>Next</button>
           </Fragment>
         )}
-
-
-        {/* <br /><br /><br /> */}
-
 
 
         {next && <Game />}

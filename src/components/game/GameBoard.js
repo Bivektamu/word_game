@@ -84,7 +84,7 @@ export const GameBoard = () => {
                             const potentialNewPlayer = getCurrentPlayerById(0)
                             const numberOfTries = potentialNewPlayer[0].tries
 
-                            if (numberOfTries < 5) {
+                            if (numberOfTries < 10) {
                                 setCurrentPlayerId(0)
                             }
                             else {
@@ -107,13 +107,13 @@ export const GameBoard = () => {
 
                                 const numberOfTries = potentialNewPlayer[0].tries
 
-                                if (numberOfTries < 5) {
+                                if (numberOfTries < 10) {
                                     setCurrentPlayerId(i + 1);
                                     break;
                                 }
                                 else {
                                     const { id } = potentialNewPlayer[0]
-                                    if (gameOverCounter + 1 < numberOfPlayers * 5 && id === numberOfPlayers - 1) {
+                                    if (gameOverCounter + 1 < numberOfPlayers * 10 && id === numberOfPlayers - 1) {
                                         console.log("aksjdbfaskbf")
                                         findPotentialPlayer(-1)
                                         break;
@@ -146,7 +146,7 @@ export const GameBoard = () => {
                     setTimeout(function () {
 
                         console.log(matched)
-                        if (matched && currentPlayer.tries < 5) {
+                        if (matched && currentPlayer.tries < 10) {
                             setBtnDisabled(false)
                             setToggleMatched(!matched)
                             return
@@ -156,7 +156,7 @@ export const GameBoard = () => {
                             const potentialNewPlayer = getCurrentPlayerById(0)
                             const numberOfTries = potentialNewPlayer[0].tries
 
-                            if (numberOfTries < 5) {
+                            if (numberOfTries < 10) {
                                 setCurrentPlayerId(0)
                             }
                             else {
@@ -179,14 +179,13 @@ export const GameBoard = () => {
 
                                 const numberOfTries = potentialNewPlayer[0].tries
 
-                                if (numberOfTries < 5) {
+                                if (numberOfTries < 10) {
                                     setCurrentPlayerId(i + 1);
                                     break;
                                 }
                                 else {
                                     const { id } = potentialNewPlayer[0]
-                                    if (gameOverCounter + 1 < numberOfPlayers * 5 && id === numberOfPlayers - 1) {
-                                        console.log("aksjdbfaskbf")
+                                    if (gameOverCounter + 1 < numberOfPlayers * 10 && id === numberOfPlayers - 1) {
                                         findPotentialPlayer(-1)
                                         break;
                                     }
@@ -214,7 +213,7 @@ export const GameBoard = () => {
 
     return (
         <div>
-            {gameOverCounter < numberOfPlayers * 5 ? <Fragment>
+            {gameOverCounter < numberOfPlayers * 10 ? <Fragment>
                 <div>
                     <div className="flex">
                         <h3>Player <span>{currentPlayerId + 1}</span></h3>

@@ -1,23 +1,26 @@
 import { dictionary } from "../api";
+
 export function getDictionary() {
     return dictionary;
 }
 
+
 export const addWordsToDictionary = (wordToAdd) => new Promise((resolve, reject) => {
-
     wordToAdd = wordToAdd.split(",");
-
     var word_already_exists = []
     var check_if_already_exists = ''
+
+    // GETTING WORD ONE BY ONE FROM SET OF INPUTED WORDS AND CHECKING IF EXISTS IN DICTIONARY OR NOT
     for (var i = 0; i < wordToAdd.length; i++) {
         wordToAdd[i] = wordToAdd[i].replace(/\s/g, '');
 
-        if (wordToAdd[i] !== "" && dictionary.length < 100 && dictionary.length > 0) {
+        if (wordToAdd[i] !== "" && dictionary.length <= 100 && dictionary.length > 0) {
+
+            // Below comment is for neglecting warning so that this project can be pushed live
             //eslint-disable-next-line 
             check_if_already_exists = dictionary.filter((word) => word === wordToAdd[i])
 
             if (check_if_already_exists.length > 0) {
-                console.log(check_if_already_exists)
                 word_already_exists.push(check_if_already_exists)
             }
             else {
@@ -27,6 +30,7 @@ export const addWordsToDictionary = (wordToAdd) => new Promise((resolve, reject)
         }
     }
 
+    // SENDING BACK WORDS WHICH ALREADY EXISTS IN DICTIONARY AS AN ERROR
     if (word_already_exists) {
         reject(word_already_exists)
     }
@@ -55,12 +59,10 @@ export const checkIfWordExistsInDictionary = (word) => new Promise((resolve, rej
 
 
     if (word_not_in_dictionary.length < 1) {
-
-
-        setTimeout(resolve(word.length), 2000)
+        resolve(word.length)
     }
     else {
-        setTimeout(reject(word_not_in_dictionary), 2000)
+        reject(word_not_in_dictionary)
 
     }
 

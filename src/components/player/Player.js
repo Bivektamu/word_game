@@ -17,11 +17,6 @@ export const Player = () => {
                 <label htmlFor="">Number  of Players</label>
                 <input type="text" name="numer_of_players" id="" value={numberOfPlayers} onChange={(e) => setNumberOfPlayers(e.target.value)} />
             </form>
-
-
-
-
-
         </div>
     )
 }
