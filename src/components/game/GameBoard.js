@@ -26,14 +26,9 @@ export const GameBoard = () => {
     useEffect(() => {
 
         const player = getCurrentPlayerById(currentPlayerId)
-
         setCurrentPlayer(player[0]);
-
         setScore(currentPlayer.score);
-
         setNumberOfPlayers(playerLength())
-
-
 
         if (score > winner.score) {
             const temp = {
@@ -44,13 +39,55 @@ export const GameBoard = () => {
             setWinner(temp)
         }
 
-        setTimeout(() => { setCheck(false) }, 2000)
-
-
+        setTimeout(() => { setCheck(false) }, 1000)
 
 
     }, [currentPlayer, score, currentPlayerId, numberOfPlayers, gameOverCounter, winner])
 
+    const findAnotherPlayer = (flag) => {
+        if (currentPlayerId >= numberOfPlayers - 1) {
+            const potentialNewPlayer = getCurrentPlayerById(0)
+            const numberOfTries = potentialNewPlayer[0].tries
+
+            if (numberOfTries < 10) {
+                setCurrentPlayerId(0)
+            }
+            else {
+                potentialPlayer(0);
+            }
+
+
+        }
+
+        potentialPlayer(currentPlayerId);
+    }
+
+    function potentialPlayer(potential_player_id) {
+        for (var i = potential_player_id; i < numberOfPlayers - 1; i++) {
+            const potentialNewPlayer = getCurrentPlayerById(i + 1) && getCurrentPlayerById(i + 1)
+
+            if (!potentialNewPlayer) {
+                break;
+            }
+
+            const numberOfTries = potentialNewPlayer[0].tries
+
+            if (numberOfTries < 10) {
+                setCurrentPlayerId(i + 1);
+                break;
+            }
+            else {
+                const { id } = potentialNewPlayer[0]
+                if (gameOverCounter + 1 < numberOfPlayers * 10 && id === numberOfPlayers - 1) {
+                    potentialPlayer(-1)
+                    break;
+                }
+            }
+
+
+        }
+
+    }
 
     const onSubmit = e => {
         e.preventDefault();
@@ -60,155 +97,43 @@ export const GameBoard = () => {
         checkIfWordExistsInDictionary(words)
             .then(
                 result => {
-
                     setCheck(true)
-
                     setUnmatchedWords('')
-
-                    setGameOverCounter(gameOverCounter + 1)
-
                     setToggleMatched(true)
+                    setScore(currentPlayer.score)
+                    setTimeout(function () {
+                        setBtnDisabled(false)
+                        findAnotherPlayer(true)
+                    }, 1000);
 
                     updateScoreAndTriesByPlayerId(currentPlayerId, result)
 
-                    setScore(currentPlayer.score)
-
-                    console.log("**************************")
-                    console.log("Player Id", currentPlayer.id + 1)
-                    console.log("tries of current", currentPlayer.tries)
-
-                    setTimeout(function () {
-                        setBtnDisabled(false)
-
-                        if (currentPlayerId >= numberOfPlayers - 1) {
-                            const potentialNewPlayer = getCurrentPlayerById(0)
-                            const numberOfTries = potentialNewPlayer[0].tries
-
-                            if (numberOfTries < 10) {
-                                setCurrentPlayerId(0)
-                            }
-                            else {
-                                findPotentialPlayer(0);
-                            }
-
-
-                        }
-
-                        findPotentialPlayer(currentPlayerId);
-
-                        function findPotentialPlayer(potential_player_id) {
-                            for (var i = potential_player_id; i < numberOfPlayers - 1; i++) {
-                                const potentialNewPlayer = getCurrentPlayerById(i + 1) && getCurrentPlayerById(i + 1)
-
-                                if (!potentialNewPlayer) {
-                                    // return
-                                    break;
-                                }
-
-                                const numberOfTries = potentialNewPlayer[0].tries
-
-                                if (numberOfTries < 10) {
-                                    setCurrentPlayerId(i + 1);
-                                    break;
-                                }
-                                else {
-                                    const { id } = potentialNewPlayer[0]
-                                    if (gameOverCounter + 1 < numberOfPlayers * 10 && id === numberOfPlayers - 1) {
-                                        console.log("aksjdbfaskbf")
-                                        findPotentialPlayer(-1)
-                                        break;
-                                    }
-                                }
-
-
-                            }
-
-                        }
-
-                    }, 2000);
                 },
                 error => {
-
-                    console.error(error)
-                    setUnmatchedWords(error)
                     setCheck(false)
-
-
+                    setUnmatchedWords(error)
                     updateScoreAndTriesByPlayerId(currentPlayerId, 0)
 
-                    console.log("Player Id", currentPlayer.id + 1)
-                    console.log("tries of current", currentPlayer.tries)
-
-                    setGameOverCounter(gameOverCounter + 1)
-
-
-
                     setTimeout(function () {
-
-                        console.log(matched)
                         if (matched && currentPlayer.tries < 10) {
                             setBtnDisabled(false)
-                            setToggleMatched(!matched)
+                            // THIS IS TO GIVE PLAYER ONE MORE TRY
+                            setToggleMatched(false)
                             return
                         }
 
-                        if (currentPlayerId >= numberOfPlayers - 1) {
-                            const potentialNewPlayer = getCurrentPlayerById(0)
-                            const numberOfTries = potentialNewPlayer[0].tries
-
-                            if (numberOfTries < 10) {
-                                setCurrentPlayerId(0)
-                            }
-                            else {
-                                findPotentialPlayer(0);
-                            }
-
-
-                        }
-
-                        findPotentialPlayer(currentPlayerId);
-
-                        function findPotentialPlayer(potential_player_id) {
-                            for (var i = potential_player_id; i < numberOfPlayers - 1; i++) {
-                                const potentialNewPlayer = getCurrentPlayerById(i + 1) && getCurrentPlayerById(i + 1)
-
-                                if (!potentialNewPlayer) {
-                                    // return
-                                    break;
-                                }
-
-                                const numberOfTries = potentialNewPlayer[0].tries
-
-                                if (numberOfTries < 10) {
-                                    setCurrentPlayerId(i + 1);
-                                    break;
-                                }
-                                else {
-                                    const { id } = potentialNewPlayer[0]
-                                    if (gameOverCounter + 1 < numberOfPlayers * 10 && id === numberOfPlayers - 1) {
-                                        findPotentialPlayer(-1)
-                                        break;
-                                    }
-                                }
-
-
-                            }
-
-                        }
-
+                        setUnmatchedWords('')
+                        findAnotherPlayer(false)
                         setBtnDisabled(false)
-                        setToggleMatched(!matched)
 
-
-                    }, 2000);
-
-
+                        // THIS IS TO SKIP PLAYER, SINCE PLAYER ALREADY TRIED ONE TIME
+                        setToggleMatched(true)
+                    }, 1000);
                 }
-            );
-
-
-
-
+            )
+            .finally(() => {
+                setGameOverCounter(gameOverCounter + 1)
+            })
     }
 
     return (
@@ -232,7 +157,7 @@ export const GameBoard = () => {
 
                         {unmatchedWords && (<div className="alert">
                             <p>
-                                {unmatchedWords.map(error => <span className="unmatched">{error}</span>)}
+                                {unmatchedWords.map((error, index) => <span key={index} className="unmatched">{error}</span>)}
                             </p>
                         </div>
                         )}
